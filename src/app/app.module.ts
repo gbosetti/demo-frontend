@@ -7,6 +7,8 @@ import { NewItemComponent } from './new-item/new-item.component';
 import { AppRoutingModule } from './/app-routing.module';
 import { ReactiveFormsModule } from "@angular/forms";
 import { MockItemsService } from "./_services/mock-items.service";
+import { HttpsItemsService } from "./_services/https-items.service";
+import { HttpClientModule } from "@angular/common/http";
 
 @NgModule({
   declarations: [
@@ -17,9 +19,10 @@ import { MockItemsService } from "./_services/mock-items.service";
   imports: [
     BrowserModule,
     AppRoutingModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    HttpClientModule
   ],
-  providers: [ MockItemsService ],
+  providers: [ MockItemsService, HttpsItemsService ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
