@@ -14,6 +14,7 @@ export class ListComponent implements OnInit {
 
   constructor(private service: HttpsItemsService) {
   	this.service.getItems().subscribe(serviceItems => {
+      console.log("Items logueados desde el componente", serviceItems)
   		this.items = serviceItems;
   	});
   }

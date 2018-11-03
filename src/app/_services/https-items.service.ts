@@ -13,37 +13,39 @@ export class HttpsItemsService extends AbstractItemsService {
 
   constructor(private http: HttpClient) { 
   	super();
-  	this.url = "http://localhost:3000/api/";
+  	this.url = "localhost:3000/api/";
+  }
+
+  getHeadersWith(token){
+
+    return {
+      headers: new HttpHeaders({
+        'Content-Type':  'application/json',
+        'Authorization': token
+      })
+    };
   }
 
   getItems():Observable<Item[]>{
 
   	return new Observable((observable) => {
 
-  		this.http.post(this.url + "customusers/login", {
-		  "username": "admin",
-		  "password": "admin"
-		}).subscribe(response => {
+    		this.http.post("http://" + this.url + "customusers/login", {
+  		  "username": "admin",
+  		  "password": "nimda"
+  		}).subscribe(response => {
 
-			console.log(response);
-			var token = response["id"];
+  			var token = response["id"];
+  			var headers = this.getHeadersWith(token); 
 
-			var headers = {headers: new HttpHeaders({
-		  		"ContentType": "application/json",
-		  		"Authentication": token
-		  	})};
+        this.http.get<Item[]>("http://" + this.url + "items", headers).subscribe(itemsFromBackend => {
 
-		  	//this.http.get<Item[]>(this.url, headers);
-
-		  	//observable.next(this.items);
-  			observable.complete();
-		});
-
-  		
-  	});
-
-
-	  	
+            console.log("Items logueados desde el servicio", itemsFromBackend);
+            observable.next(itemsFromBackend);
+            observable.complete();
+        });
+  		});	
+  	});	  	
   };
 
   remove(item: Item):Observable<Item[]>{
